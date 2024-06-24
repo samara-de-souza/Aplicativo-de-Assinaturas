@@ -15,7 +15,7 @@ public class VendaAssinatura {
     }
 
     public double calculaPreco(Assinatura assinatura, Pagamento pagamento) {
-        // Exemplo de lógica de promoção
+        
         if ("ANUAL".equalsIgnoreCase(pagamento.getPromocao())) {
             return assinatura.getAplicativo().getCustoMensal() * 12 * 0.6; // 40% de desconto para pagamento anual
         } else if ("PROMO30_45".equalsIgnoreCase(pagamento.getPromocao())) {

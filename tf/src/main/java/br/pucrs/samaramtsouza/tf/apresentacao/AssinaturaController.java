@@ -11,7 +11,14 @@ import java.util.*;
 @RequestMapping("/api")
 public class AssinaturaController {
 
+    @Autowired
+    private AplicativoService aplicativoService;
 
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private AssinaturaService assinaturaService;
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
@@ -22,6 +29,23 @@ public class AssinaturaController {
         String password = user.get("senha");
         Usuario usuario = usuarioRepository.findById(username).orElse(null);
         return usuario != null && usuario.getSenha().equals(password);
+    }
+
+    @GetMapping("/clientes")
+    public List<Cliente> getClientes() {
+        return clienteService.listarClientes();
+    }
+
+    @GetMapping("/aplicativos")
+    public List<Aplicativo> getAplicativos() {
+        return aplicativoService.listarAplicativos();
+    }
+
+    @PostMapping("/assinaturas")
+    public Assinatura criarAssinatura(@RequestBody Map<String, Long> data) {
+        Long codCliente = data.get("codigoCliente");
+        Long codAplicativo = data.get("codigoAplicativo");
+        return assinaturaService.criarAssinatura(codCliente, codAplicativo);
     }
 
 

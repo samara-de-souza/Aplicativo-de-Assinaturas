@@ -16,25 +16,6 @@ public class AssinaturaService {
     @Autowired
     private IAplicativoRepository aplicativoRepository;
 
-    @Autowired
-    private VendaAssinatura vendaAssinatura;
-
-    public Assinatura criarAssinatura(Long codCliente, Long codAplicativo) {
-        Cliente cliente = clienteRepository.findById(codCliente).orElseThrow();
-        Aplicativo aplicativo = aplicativoRepository.findById(codAplicativo).orElseThrow();
-        Assinatura assinatura = new Assinatura();
-        assinatura.setCliente(cliente);
-        assinatura.setAplicativo(aplicativo);
-        assinatura.setInicioVigencia(new Date());
-        assinatura.setFimVigencia(vendaAssinatura.calcularNovaDataValidade(assinatura.getInicioVigencia(), 7)); // 7 dias grátis
-        return assinaturaRepository.save(assinatura);
-    }
-
-    public List<Assinatura> listarAssinaturas(String tipo) {
-        // Implementar lógica de filtro de assinaturas baseado no tipo
-        return assinaturaRepository.findAll(); // Placeholder
-    }
-
     public List<Assinatura> listarAssinaturasPorCliente(Long codcli) {
         Cliente cliente = clienteRepository.findById(codcli).orElseThrow();
         return assinaturaRepository.findByCliente(cliente);

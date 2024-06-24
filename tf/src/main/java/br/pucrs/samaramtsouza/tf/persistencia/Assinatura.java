@@ -14,6 +14,16 @@ public class Assinatura {
     private Date inicioVigencia;
     private Date fimVigencia;
 
+    public Assinatura() {}
+
+    public Assinatura(Long codigo, Aplicativo aplicativo, Cliente cliente, Date inicioVigencia, Date fimVigencia) {
+        this.codigo = codigo;
+        this.aplicativo = aplicativo;
+        this.cliente = cliente;
+        this.inicioVigencia = inicioVigencia;
+        this.fimVigencia = fimVigencia;
+    }
+
     public Long getCodigo() {
         return codigo;
     }

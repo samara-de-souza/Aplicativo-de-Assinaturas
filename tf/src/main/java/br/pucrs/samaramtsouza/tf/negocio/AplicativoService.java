@@ -1,9 +1,11 @@
 package br.pucrs.samaramtsouza.tf.negocio;
 
-import br.pucrs.samaramtsouza.tf.persistencia.*;
+import br.pucrs.samaramtsouza.tf.persistencia.IAplicativoRepository;
+import br.pucrs.samaramtsouza.tf.persistencia.Aplicativo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.List;
 
 @Service
 public class AplicativoService {
@@ -18,11 +20,5 @@ public class AplicativoService {
         return aplicativoRepository.save(aplicativo);
     }
 
-    public Optional<Aplicativo> encontrarAplicativoPorId(Long id) {
-        return aplicativoRepository.findById(id);
-    }
 
-    public void deletarAplicativo(Long id) {
-        aplicativoRepository.deleteById(id);
-    }
 }
