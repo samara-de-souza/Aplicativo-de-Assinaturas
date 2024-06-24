@@ -10,6 +10,14 @@ public class Cliente {
     private String nome;
     private String email;
 
+    public Cliente() {}
+
+    public Cliente(Long codigo, String nome, String email) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.email = email;
+    }
+
     public Long getCodigo() {
         return codigo;
     }

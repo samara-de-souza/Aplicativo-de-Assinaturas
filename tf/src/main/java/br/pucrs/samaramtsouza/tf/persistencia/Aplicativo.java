@@ -10,6 +10,14 @@ public class Aplicativo {
     private String nome;
     private double custoMensal;
 
+    public Aplicativo() {}
+
+    public Aplicativo(Long codigo, String nome, double custoMensal) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.custoMensal = custoMensal;
+    }
+
     public Long getCodigo() {
         return codigo;
     }
