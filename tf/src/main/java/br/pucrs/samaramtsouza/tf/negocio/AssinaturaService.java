@@ -1,6 +1,8 @@
 package br.pucrs.samaramtsouza.tf.negocio;
 
 import br.pucrs.samaramtsouza.tf.persistencia.*;
+import jakarta.persistence.ManyToOne;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,9 @@ public class AssinaturaService {
         Aplicativo aplicativo = aplicativoRepository.findById(codAplicativo)
                 .orElseThrow(() -> new RuntimeException("Aplicativo não encontrado: " + codAplicativo));
         
-        Date inicioVigencia = new Date();
-        Date fimVigencia = new Date(inicioVigencia.getTime() + 30L * 24 * 60 * 60 * 1000); // 30 dias
+        Date fimVigencia = new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000); // 30 dias
         
-        Assinatura assinatura = new Assinatura(null, aplicativo, cliente, inicioVigencia, fimVigencia);
+        Assinatura assinatura = new Assinatura(1L, aplicativo, cliente, new Date(), fimVigencia);
         
         return assinaturaRepository.save(assinatura);
     }

@@ -14,7 +14,8 @@ public class Assinatura {
     private Date inicioVigencia;
     private Date fimVigencia;
 
-    public Assinatura() {}
+    public Assinatura() {
+    }
 
     public Assinatura(Long codigo, Aplicativo aplicativo, Cliente cliente, Date inicioVigencia, Date fimVigencia) {
         this.codigo = codigo;

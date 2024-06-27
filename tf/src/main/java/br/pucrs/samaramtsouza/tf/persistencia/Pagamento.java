@@ -13,6 +13,9 @@ public class Pagamento {
     private Date dataPagamento;
     private String promocao;
 
+    public Pagamento() {
+    }
+
     public Pagamento(Long codigo, Assinatura assinatura, double valorPago, Date dataPagamento, String promocao) {
         this.codigo = codigo;
         this.assinatura = assinatura;
