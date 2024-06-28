@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração de Assinaturas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Administração de Assinaturas</h1>
+        <div class="nav">
+            <button id="btnClientes">Clientes</button>
+            <button id="btnAssinaturas">Assinaturas</button>
+            <button id="btnAplicativos">Aplicativos</button>
+            <button id="btnPagamentos">Pagamentos</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="clientesSection" class="section">
+            <h2>Cadastrar novo cliente:</h2>
+            <input type="text" id="clienteNome" placeholder="nome completo...">
+            <input type="text" id="clienteCodigo" placeholder="código...">
+            <input type="email" id="clienteEmail" placeholder="e-mail...">
+            <button onclick="cadastrarCliente()">Concluir</button>
+            <h2>Lista de Clientes:</h2>
+            <ul id="listaClientes"></ul>
+        </section>
+
+        <section id="assinaturasSection" class="section">
+            <h2>Criar nova assinatura:</h2>
+            <input type="text" id="assinaturaClienteCodigo" placeholder="código do cliente...">
+            <input type="text" id="assinaturaAplicativoCodigo" placeholder="código do aplicativo...">
+            <button onclick="criarAssinatura()">Concluir</button>
+            <h2>Lista de Assinaturas:</h2>
+            <ul id="listaAssinaturas"></ul>
+        </section>
+
+        <section id="aplicativosSection" class="section">
+            <h2>Atualizar o custo mensal:</h2>
+            <input type="text" id="aplicativoCodigo" placeholder="código do aplicativo...">
+            <input type="text" id="aplicativoCusto" placeholder="novo custo...">
+            <button onclick="atualizarCusto()">Concluir</button>
+            <h2>Lista de Aplicativos:</h2>
+            <ul id="listaAplicativos"></ul>
+        </section>
+
+        <section id="pagamentosSection" class="section">
+            <h2>Solicitar um registro:</h2>
+            <input type="text" id="pagamentoData" placeholder="data do pagamento...">
+            <input type="text" id="pagamentoCodigo" placeholder="código do pagamento...">
+            <input type="text" id="pagamentoValor" placeholder="valor do pagamento...">
+            <button onclick="solicitarRegistro()">Concluir</button>
+            <h2>Lista de Pagamentos:</h2>
+            <ul id="listaPagamentos"></ul>
+        </section>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

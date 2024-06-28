@@ -3,6 +3,7 @@ package br.pucrs.samaramtsouza.tf.apresentacao;
 import br.pucrs.samaramtsouza.tf.negocio.*;
 import br.pucrs.samaramtsouza.tf.persistencia.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -24,6 +25,9 @@ public class AppController {
 
     @Autowired
     private PagamentoService pagamentoService;
+
+    @Autowired
+    private IClienteRepository clienteRepository;
 
     // Endpoint para verificar se o usuário é válido
     @PostMapping("/usuvalido")
