@@ -6,11 +6,14 @@ import java.util.Date;
 @Entity
 public class Assinatura {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @ManyToOne
-    private Aplicativo aplicativo;
-    @ManyToOne
+    @JoinColumn(name = "cliente_codigo", nullable = false)
     private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "aplicativo_codigo", nullable = false)
+    private Aplicativo aplicativo;
     private Date inicioVigencia;
     private Date fimVigencia;
 
