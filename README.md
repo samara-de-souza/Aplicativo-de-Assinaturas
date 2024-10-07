@@ -43,3 +43,18 @@ The project follows a modular structure, divided into several packages:
 ### How to Run the Project
 
 1. Clone this repository:
+- `git clone [repository_url]`
+2. Navigate to the project directory and build the project using Maven:
+- `mvn clean install`
+3. Run the application:
+- `mvn spring-boot`
+
+### Usage
+
+- Access the application through the `index.html` page, which provides an interface for managing subscriptions.
+- Admin UI includes forms for adding clients, users, and managing payments.
+
+### Testing
+
+The project includes unit tests located in the `test` folder. To run the tests:
+- `mvn test`
