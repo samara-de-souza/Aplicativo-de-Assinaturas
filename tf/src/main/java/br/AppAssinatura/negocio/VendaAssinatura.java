@@ -1,8 +1,9 @@
-package br.pucrs.samaramtsouza.tf.negocio;
+package br.AppAssinatura.negocio;
 
-import br.pucrs.samaramtsouza.tf.persistencia.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import br.AppAssinatura.persistencia.*;
 
 import java.util.Date;
 import java.util.Calendar;

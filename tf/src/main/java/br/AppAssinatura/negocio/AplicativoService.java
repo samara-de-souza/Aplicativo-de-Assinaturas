@@ -1,9 +1,10 @@
-package br.pucrs.samaramtsouza.tf.negocio;
+package br.AppAssinatura.negocio;
 
-import br.pucrs.samaramtsouza.tf.persistencia.IAplicativoRepository;
-import br.pucrs.samaramtsouza.tf.persistencia.Aplicativo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.AppAssinatura.persistencia.Aplicativo;
+import br.AppAssinatura.persistencia.IAplicativoRepository;
 
 import java.util.List;
 

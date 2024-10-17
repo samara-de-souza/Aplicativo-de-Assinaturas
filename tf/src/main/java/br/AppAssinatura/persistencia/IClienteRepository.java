@@ -1,4 +1,4 @@
-package br.pucrs.samaramtsouza.tf.persistencia;
+package br.AppAssinatura.persistencia;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

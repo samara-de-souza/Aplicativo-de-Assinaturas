@@ -1,10 +1,11 @@
-package br.pucrs.samaramtsouza.tf.apresentacao;
+package br.AppAssinatura.apresentacao;
 
-import br.pucrs.samaramtsouza.tf.negocio.*;
-import br.pucrs.samaramtsouza.tf.persistencia.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import br.AppAssinatura.negocio.*;
+import br.AppAssinatura.persistencia.*;
 
 import java.util.*;
 

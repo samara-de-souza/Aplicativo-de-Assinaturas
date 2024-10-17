@@ -1,9 +1,10 @@
-package br.pucrs.samaramtsouza.tf.negocio;
+package br.AppAssinatura.negocio;
 
-import br.pucrs.samaramtsouza.tf.persistencia.IUsuarioRepository;
-import br.pucrs.samaramtsouza.tf.persistencia.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.AppAssinatura.persistencia.IUsuarioRepository;
+import br.AppAssinatura.persistencia.Usuario;
 
 @Service
 public class UsuarioService {

@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TfApplication",
+            "request": "launch",
+            "mainClass": "br.AppAssinatura.TfApplication",
+            "projectName": "tf"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-TfApplication<tf>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

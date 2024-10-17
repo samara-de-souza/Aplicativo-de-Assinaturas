@@ -1,14 +1,14 @@
-package br.pucrs.samaramtsouza.tf;
+package br.AppAssinatura;
 
 import org.junit.jupiter.api.Test;
+
+import br.AppAssinatura.persistencia.Aplicativo;
+import br.AppAssinatura.persistencia.Assinatura;
+import br.AppAssinatura.persistencia.Cliente;
+import br.AppAssinatura.persistencia.Pagamento;
+import br.AppAssinatura.persistencia.Usuario;
+
 import static org.junit.jupiter.api.Assertions.*;
-
-
-import br.pucrs.samaramtsouza.tf.persistencia.Cliente;
-import br.pucrs.samaramtsouza.tf.persistencia.Aplicativo;
-import br.pucrs.samaramtsouza.tf.persistencia.Assinatura;
-import br.pucrs.samaramtsouza.tf.persistencia.Pagamento;
-import br.pucrs.samaramtsouza.tf.persistencia.Usuario;
 
 import java.util.Date;
 

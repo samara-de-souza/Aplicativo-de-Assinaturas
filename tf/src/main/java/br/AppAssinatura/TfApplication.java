@@ -1,4 +1,4 @@
-package br.pucrs.samaramtsouza.tf;
+package br.AppAssinatura;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,10 +1,11 @@
-package br.pucrs.samaramtsouza.tf.negocio;
+package br.AppAssinatura.negocio;
 
-import br.pucrs.samaramtsouza.tf.persistencia.*;
 import jakarta.persistence.ManyToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.AppAssinatura.persistencia.*;
 
 import java.util.Date;
 import java.util.List;

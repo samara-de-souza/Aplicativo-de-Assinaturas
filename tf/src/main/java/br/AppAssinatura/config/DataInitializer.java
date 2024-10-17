@@ -1,8 +1,10 @@
-package br.pucrs.samaramtsouza.tf.config;
+package br.AppAssinatura.config;
 
-import br.pucrs.samaramtsouza.tf.persistencia.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+
+import br.AppAssinatura.persistencia.*;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 

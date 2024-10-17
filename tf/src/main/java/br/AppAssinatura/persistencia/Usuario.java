@@ -1,4 +1,4 @@
-package br.pucrs.samaramtsouza.tf.persistencia;
+package br.AppAssinatura.persistencia;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
