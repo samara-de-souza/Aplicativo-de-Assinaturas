@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TfApplication<tf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.pucrs.samaramtsouza.tf.TfApplication",
+            "projectName": "tf",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
