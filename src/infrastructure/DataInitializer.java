@@ -1,12 +1,13 @@
-package br.AppAssinatura.config;
+package AppAssinatura.infrastructure;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import br.AppAssinatura.persistencia.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
+
+import AppAssinatura.domain.entity.*;
+import AppAssinatura.domain.repository.*;
 
 import java.util.Arrays;
 import java.util.Date;

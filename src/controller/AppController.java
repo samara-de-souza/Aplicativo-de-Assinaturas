@@ -1,11 +1,12 @@
-package br.AppAssinatura.apresentacao;
+package AppAssinatura.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.AppAssinatura.negocio.*;
-import br.AppAssinatura.persistencia.*;
+import AppAssinatura.domain.entity.*;
+import AppAssinatura.domain.repository.*;
+import AppAssinatura.domain.service.*;
 
 import java.util.*;
 

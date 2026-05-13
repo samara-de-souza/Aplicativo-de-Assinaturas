@@ -1,4 +1,4 @@
-package br.AppAssinatura.persistencia;
+package AppAssinatura.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

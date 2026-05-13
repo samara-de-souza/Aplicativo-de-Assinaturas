@@ -1,12 +1,12 @@
-package br.AppAssinatura;
+package AppAssinatura.tests;
 
 import org.junit.jupiter.api.Test;
 
-import br.AppAssinatura.persistencia.Aplicativo;
-import br.AppAssinatura.persistencia.Assinatura;
-import br.AppAssinatura.persistencia.Cliente;
-import br.AppAssinatura.persistencia.Pagamento;
-import br.AppAssinatura.persistencia.Usuario;
+import AppAssinatura.domain.entity.Aplicativo;
+import AppAssinatura.domain.entity.Assinatura;
+import AppAssinatura.domain.entity.Cliente;
+import AppAssinatura.domain.entity.Pagamento;
+import AppAssinatura.domain.entity.Usuario;
 
 import static org.junit.jupiter.api.Assertions.*;
 

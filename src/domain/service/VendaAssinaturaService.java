@@ -1,18 +1,18 @@
-package br.AppAssinatura.negocio;
+package AppAssinatura.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import br.AppAssinatura.persistencia.*;
+import AppAssinatura.domain.entity.*;
 
 import java.util.Date;
 import java.util.Calendar;
 
-@Component
-public class VendaAssinatura {
+@Service
+public class VendaAssinaturaService {
 
     @Autowired
-    public VendaAssinatura() {
+    public VendaAssinaturaService() {
     }
 
     public double calculaPreco(Assinatura assinatura, Pagamento pagamento) {

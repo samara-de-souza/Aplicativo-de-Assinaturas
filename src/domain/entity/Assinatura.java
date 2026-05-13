@@ -1,4 +1,4 @@
-package br.AppAssinatura.persistencia;
+package AppAssinatura.domain.entity;
 
 import jakarta.persistence.*;
 import java.util.Date;

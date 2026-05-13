@@ -1,10 +1,10 @@
-package br.AppAssinatura.negocio;
+package AppAssinatura.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.AppAssinatura.persistencia.IUsuarioRepository;
-import br.AppAssinatura.persistencia.Usuario;
+import AppAssinatura.domain.entity.Usuario;
+import AppAssinatura.domain.repository.IUsuarioRepository;
 
 @Service
 public class UsuarioService {

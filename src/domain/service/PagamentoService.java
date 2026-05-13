@@ -1,10 +1,10 @@
-package br.AppAssinatura.negocio;
+package AppAssinatura.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.AppAssinatura.persistencia.Assinatura;
-import br.AppAssinatura.persistencia.IAssinaturaRepository;
+import AppAssinatura.domain.entity.Assinatura;
+import AppAssinatura.domain.repository.IAssinaturaRepository;
 
 import java.util.Calendar;
 import java.util.Date;

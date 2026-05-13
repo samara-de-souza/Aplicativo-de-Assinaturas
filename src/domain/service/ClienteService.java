@@ -1,10 +1,10 @@
-package br.AppAssinatura.negocio;
+package AppAssinatura.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.AppAssinatura.persistencia.Cliente;
-import br.AppAssinatura.persistencia.IClienteRepository;
+import AppAssinatura.domain.entity.Cliente;
+import AppAssinatura.domain.repository.IClienteRepository;
 
 import java.util.List;
 

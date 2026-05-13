@@ -1,11 +1,12 @@
-package br.AppAssinatura.negocio;
+package AppAssinatura.domain.service;
 
 import jakarta.persistence.ManyToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.AppAssinatura.persistencia.*;
+import AppAssinatura.domain.entity.*;
+import AppAssinatura.domain.repository.*;
 
 import java.util.Date;
 import java.util.List;

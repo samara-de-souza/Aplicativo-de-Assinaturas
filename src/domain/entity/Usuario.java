@@ -1,4 +1,4 @@
-package br.AppAssinatura.persistencia;
+package AppAssinatura.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
