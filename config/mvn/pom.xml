@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>AppAssinatura</groupId>
-	<artifactId>tf</artifactId>
+	<artifactId>app-assinatura</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tf</name>
+	<name>app-assinatura</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
