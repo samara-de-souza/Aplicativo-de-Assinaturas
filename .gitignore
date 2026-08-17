@@ -59,3 +59,6 @@ build/
 
 ### folders ###
 target/
+.md
+CHECKLIST_CICD_DEPLOY.md
+.vscode/settings.json
