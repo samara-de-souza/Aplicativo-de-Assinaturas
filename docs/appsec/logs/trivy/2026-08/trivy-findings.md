@@ -1,0 +1,161 @@
+# AppSec Findings and Remediation Log - Trivy
+
+Este documento centraliza os achados identificados com Trivy no projeto `e-signature-app`.
+
+## SCA-TRIVY-001 - Outdated Spring Boot Parent
+
+### Summary
+
+O Trivy identificou que a aplicacao empacotava dependencias Java vulneraveis por causa do `spring-boot-starter-parent` desatualizado no `pom.xml`.
+
+O projeto usava Spring Boot `3.1.1`, que gerenciava versoes antigas de dependencias transitivas. A correcao aplicada foi atualizar o parent para Spring Boot `3.5.13`, reduzindo a exposicao causada por bibliotecas herdadas da matriz antiga de dependencias.
+
+### Tooling
+
+```text
+Method: SCA
+Tool: Trivy 0.74.0
+Workflow: .github/workflows/security-trivy.yml
+Artifact: trivy-reports
+Report: trivy-image.txt / trivy-image.json
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+SCA-TRIVY-001
+```
+
+Dependencia raiz vulneravel:
+
+```text
+org.springframework.boot:spring-boot-starter-parent:3.1.1
+```
+
+Evidencia observada no scan:
+
+```text
+O Trivy reportou vulnerabilidades CRITICAL e HIGH em dependencias Java
+transitivas empacotadas no app.jar, incluindo componentes gerenciados pelo
+Spring Boot parent antigo.
+```
+
+Principais dependencias transitivas afetadas:
+
+```text
+org.apache.tomcat.embed:tomcat-embed-core 10.1.10
+org.springframework:spring-web 6.0.10
+org.springframework:spring-webmvc 6.0.10
+com.fasterxml.jackson.core:jackson-databind 2.15.2
+ch.qos.logback:logback-core 1.4.8
+org.yaml:snakeyaml 1.33
+com.h2database:h2 2.1.214
+```
+
+Exemplos de vulnerabilidades associadas as dependencias gerenciadas pela matriz antiga:
+
+```text
+CVE-2026-43512 - tomcat-embed-core - CRITICAL
+CVE-2025-24813 - tomcat-embed-core - CRITICAL
+CVE-2026-54513 - jackson-databind - HIGH
+CVE-2024-38819 - spring-webmvc - HIGH
+CVE-2022-1471  - snakeyaml - HIGH
+CVE-2022-45868 - h2 - HIGH
+```
+
+### Affected Components
+
+Arquivo afetado:
+
+```text
+pom.xml
+```
+
+Configuracao anterior:
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.1.1</version>
+    <relativePath/>
+</parent>
+```
+
+### Risk
+
+O uso de uma matriz antiga de dependencias aumenta o risco de exploracao por vulnerabilidades conhecidas em bibliotecas transitivas.
+
+Impactos possiveis, de acordo com os tipos de CVEs observados:
+
+```text
+Remote Code Execution
+Authentication bypass
+Authorization bypass
+Path traversal
+HTTP request smuggling
+Information disclosure
+Denial of Service
+Unsafe deserialization
+```
+
+Severidade tratada:
+
+```text
+High
+```
+
+### Root Cause
+
+A causa raiz foi o uso de Spring Boot `3.1.1` como parent Maven.
+
+Como o Spring Boot parent controla as versoes das dependencias transitivas, uma unica versao antiga no `pom.xml` fez com que o artefato final herdasse bibliotecas desatualizadas. A correcao por upgrade do parent foi escolhida para manter a matriz de dependencias alinhada, em vez de sobrescrever manualmente versoes individuais.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Atualizacao do spring-boot-starter-parent de 3.1.1 para 3.5.13.
+```
+
+Configuracao atual:
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.13</version>
+    <relativePath/>
+</parent>
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+pom.xml atualizado para Spring Boot 3.5.13
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan Trivy deve mostrar reducao dos achados CRITICAL e HIGH associados
+as dependencias Java transitivas gerenciadas pelo Spring Boot 3.1.1.
+```
+
+### Status
+
+```text
+Fixed
+```
+
