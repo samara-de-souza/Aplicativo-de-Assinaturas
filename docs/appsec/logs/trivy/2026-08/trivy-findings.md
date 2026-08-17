@@ -159,3 +159,149 @@ as dependencias Java transitivas gerenciadas pelo Spring Boot 3.1.1.
 Fixed
 ```
 
+## SCA-TRIVY-002 - Unused Vulnerable Thymeleaf Dependency
+
+### Summary
+
+O Trivy identificou vulnerabilidades criticas em dependencias Thymeleaf empacotadas no `app.jar`.
+
+A analise mostrou que o projeto nao utiliza templates Thymeleaf renderizados pelo backend. A interface web e servida como HTML, CSS e JavaScript estaticos em `src/main/resources/static`. Por isso, a dependencia `spring-boot-starter-thymeleaf` aumentava a superficie de ataque sem necessidade funcional.
+
+A correcao aplicada foi remover `spring-boot-starter-thymeleaf` do `pom.xml`.
+
+### Tooling
+
+```text
+Method: SCA
+Tool: Trivy 0.74.0
+Workflow: .github/workflows/security-trivy.yml
+Artifact: trivy-reports
+Report: trivy-image.txt / trivy-image.json
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+SCA-TRIVY-002
+```
+
+Dependencia vulneravel:
+
+```text
+org.springframework.boot:spring-boot-starter-thymeleaf
+```
+
+Componentes reportados pelo Trivy:
+
+```text
+org.thymeleaf:thymeleaf 3.1.1.RELEASE
+org.thymeleaf:thymeleaf-spring6 3.1.1.RELEASE
+```
+
+Exemplos de vulnerabilidades reportadas:
+
+```text
+CVE-2026-40477 - thymeleaf - CRITICAL
+CVE-2026-40478 - thymeleaf - CRITICAL
+CVE-2026-41901 - thymeleaf - CRITICAL
+```
+
+Evidencia funcional:
+
+```text
+Nao ha templates Thymeleaf em src/main/resources/templates.
+A interface da aplicacao esta em src/main/resources/static.
+```
+
+### Affected Components
+
+Arquivo afetado:
+
+```text
+pom.xml
+```
+
+Dependencia removida:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+### Risk
+
+Thymeleaf vulneravel pode expor a aplicacao a riscos de Server-Side Template Injection quando templates e expressoes sao renderizados no backend.
+
+Mesmo que a aplicacao atual nao use renderizacao Thymeleaf, manter a dependencia vulneravel no artefato final aumenta a superficie de ataque e prejudica a postura de seguranca do projeto.
+
+Impactos possiveis:
+
+```text
+Server-Side Template Injection
+Expression execution bypass
+Remote Code Execution em cenarios exploraveis
+```
+
+Severidade tratada:
+
+```text
+Critical
+```
+
+### Root Cause
+
+A causa raiz foi a presenca de uma dependencia nao utilizada:
+
+```text
+spring-boot-starter-thymeleaf
+```
+
+O projeto passou a servir a interface como conteudo estatico, mas a dependencia de template engine permaneceu no `pom.xml`. Como resultado, bibliotecas Thymeleaf vulneraveis foram empacotadas no `app.jar` mesmo sem necessidade funcional.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Remocao do spring-boot-starter-thymeleaf do pom.xml.
+```
+
+Justificativa:
+
+```text
+A aplicacao nao utiliza templates Thymeleaf. Remover a dependencia elimina os
+componentes vulneraveis do artefato final sem impactar a funcionalidade atual.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+spring-boot-starter-thymeleaf removido do pom.xml
+Arquivos estaticos mantidos em src/main/resources/static
+Rota / mantida via HomeController encaminhando para index.html
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan Trivy nao deve listar org.thymeleaf:thymeleaf nem
+org.thymeleaf:thymeleaf-spring6 no app.jar.
+```
+
+### Status
+
+```text
+Fixed
+```
