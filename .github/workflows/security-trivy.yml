@@ -1,0 +1,79 @@
+name: Security - Trivy
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  trivy:
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare reports directory
+        run: mkdir -p reports/trivy
+
+      - name: Build Docker image
+        run: docker build -f dockerfile -t e-signature-app .
+
+      - name: Scan repository with Trivy
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          ignore-unfixed: true
+          format: table
+          output: reports/trivy/trivy-fs.txt
+
+      - name: Scan repository with Trivy JSON report
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          ignore-unfixed: true
+          format: json
+          output: reports/trivy/trivy-fs.json
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: image
+          image-ref: e-signature-app
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          ignore-unfixed: true
+          format: table
+          output: reports/trivy/trivy-image.txt
+
+      - name: Scan Docker image with Trivy JSON report
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: image
+          image-ref: e-signature-app
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          ignore-unfixed: true
+          format: json
+          output: reports/trivy/trivy-image.json
+
+      - name: Upload Trivy reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-reports
+          path: reports/trivy/
+          if-no-files-found: error
