@@ -305,3 +305,161 @@ org.thymeleaf:thymeleaf-spring6 no app.jar.
 ```text
 Fixed
 ```
+
+## SCA-TRIVY-003 - Vulnerable Embedded Tomcat
+
+### Summary
+
+O Trivy identificou vulnerabilidades criticas no Tomcat Embedded empacotado no `app.jar`.
+
+O projeto usa Spring Boot com servidor web embutido. Por isso, o Tomcat nao aparece como dependencia declarada diretamente no `pom.xml`; ele e herdado pelos starters do Spring Boot e gerenciado pelo `spring-boot-starter-parent`.
+
+A correcao aplicada foi atualizar o Spring Boot parent de `3.5.13` para `3.5.16`, fazendo a matriz de dependencias gerenciada pelo Spring Boot atualizar o Tomcat Embedded para uma versao corrigida.
+
+### Tooling
+
+```text
+Method: SCA
+Tool: Trivy 0.74.0
+Workflow: .github/workflows/security-trivy.yml
+Artifact: trivy-reports
+Report: trivy-image.txt / trivy-image.json
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+SCA-TRIVY-003
+```
+
+Componente vulneravel:
+
+```text
+org.apache.tomcat.embed:tomcat-embed-core
+```
+
+Versao vulneravel observada:
+
+```text
+10.1.53
+```
+
+Versao corrigida indicada pelo Trivy:
+
+```text
+10.1.55
+```
+
+Exemplos de vulnerabilidades reportadas:
+
+```text
+CVE-2026-41293 - tomcat-embed-core - CRITICAL
+CVE-2026-43512 - tomcat-embed-core - CRITICAL
+CVE-2026-43515 - tomcat-embed-core - CRITICAL
+```
+
+### Affected Components
+
+Arquivo afetado:
+
+```text
+pom.xml
+```
+
+Configuracao anterior:
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.13</version>
+    <relativePath/>
+</parent>
+```
+
+Configuracao atual:
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.16</version>
+    <relativePath/>
+</parent>
+```
+
+### Risk
+
+Vulnerabilidades no Tomcat Embedded afetam diretamente a camada HTTP da aplicacao, pois o servidor embutido processa as requisicoes recebidas em `localhost:8080` ou no ambiente de deploy.
+
+Impactos possiveis:
+
+```text
+Authentication bypass
+Authorization bypass
+HTTP request handling flaws
+Information disclosure
+Denial of Service
+```
+
+Severidade tratada:
+
+```text
+Critical
+```
+
+### Root Cause
+
+A causa raiz foi o uso de Spring Boot `3.5.13`, que ainda gerenciava `tomcat-embed-core` em uma versao vulneravel.
+
+Como o Tomcat Embedded e uma dependencia transitiva gerenciada pelo Spring Boot, a correcao mais segura foi atualizar o Spring Boot parent para uma versao que ja inclui a matriz de dependencias corrigida, evitando sobrescrever manualmente a versao do Tomcat no `pom.xml`.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Atualizacao do spring-boot-starter-parent de 3.5.13 para 3.5.16.
+```
+
+Resultado esperado da correcao:
+
+```text
+Atualizacao do Tomcat Embedded gerenciado pelo Spring Boot para uma versao
+corrigida, removendo os achados criticos associados ao tomcat-embed-core
+10.1.53.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+pom.xml atualizado para Spring Boot 3.5.16
+Build Maven executado com sucesso
+Testes executados com sucesso
+Aplicacao validada apos a atualizacao
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan Trivy nao deve listar os CVEs criticos associados ao
+tomcat-embed-core 10.1.53.
+```
+
+### Status
+
+```text
+Fixed
+```
+
+
