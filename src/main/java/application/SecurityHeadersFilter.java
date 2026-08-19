@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class SecurityHeadersFilter implements Filter {
 
-    private static final String CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+    private static final String CSP = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";    
     
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

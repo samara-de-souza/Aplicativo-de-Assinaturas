@@ -525,3 +525,197 @@ Confirmar que o alerta X-Content-Type-Options Header Missing foi removido
 ```text
 Fixed
 ```
+
+
+## DAST-ZAP-004 - CSP style-src unsafe-inline
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a politica `Content-Security-Policy` permitia estilos inline por meio da diretiva `style-src 'unsafe-inline'`.
+
+O alerta surgiu apos a aplicacao passar a definir o header CSP. A politica estava funcional, mas ainda permitia CSS inline. Como o `index.html` utiliza o arquivo externo `styles.css` e nao depende de atributos `style` ou blocos `<style>`, a permissao `'unsafe-inline'` nao era necessaria.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: CSP: style-src unsafe-inline
+Risk: Medium
+Confidence: High
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-004
+```
+
+Alerta reportado:
+
+```text
+CSP: style-src unsafe-inline
+```
+
+URL afetada:
+
+```text
+http://localhost:8080
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Parametro:
+
+```text
+Content-Security-Policy
+```
+
+Severidade:
+
+```text
+Medium
+```
+
+Confianca:
+
+```text
+High
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+style-src includes unsafe-inline.
+```
+
+Politica CSP anterior:
+
+```text
+default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Resposta HTTP da interface web
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Arquivo revisado:
+
+```text
+src/main/resources/static/index.html
+```
+
+Fluxo afetado:
+
+```text
+GET /
+```
+
+### Risk
+
+A diretiva `'unsafe-inline'` enfraquece a politica CSP porque permite a execucao de estilos inline na pagina.
+
+Impactos possiveis:
+
+```text
+Politica CSP menos restritiva
+Maior superficie para injecao de conteudo em cenarios exploraveis
+Permissao desnecessaria para estilos inline
+Reducao da efetividade da CSP como controle defensivo
+```
+
+Severidade tratada:
+
+```text
+Medium
+```
+
+### Root Cause
+
+A causa raiz foi a inclusao permissiva de `'unsafe-inline'` em `style-src` durante a primeira configuracao da CSP.
+
+Essa permissao foi adicionada de forma conservadora para evitar quebra visual da interface, mas a revisao do `index.html` confirmou que os estilos sao carregados por `styles.css`, sem dependencia de estilo inline.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Remocao de 'unsafe-inline' da diretiva style-src na politica
+Content-Security-Policy.
+```
+
+Politica CSP atual:
+
+```text
+default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+```
+
+Justificativa:
+
+```text
+A interface usa styles.css como arquivo externo local. Como nao ha necessidade
+de CSS inline, a politica pode restringir style-src para 'self', reduzindo a
+superficie de ataque sem impactar a funcionalidade.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+index.html revisado sem dependencia de style inline
+Build da aplicacao executado com sucesso
+Aplicacao executada localmente
+Header Content-Security-Policy validado com curl.exe -I http://localhost:8080
+```
+
+Evidencia local:
+
+```text
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan OWASP ZAP Baseline nao deve listar o alerta
+CSP: style-src unsafe-inline.
+```
+
+### Status
+
+```text
+Fixed
+```
