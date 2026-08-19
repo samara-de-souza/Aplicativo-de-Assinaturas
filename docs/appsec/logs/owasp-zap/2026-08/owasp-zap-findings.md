@@ -894,3 +894,175 @@ Permissions Policy Header Not Set.
 ```text
 Fixed
 ```
+
+## DAST-ZAP-006 - Cross-Origin-Opener-Policy Header Missing or Invalid
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a aplicacao nao definia o header HTTP `Cross-Origin-Opener-Policy` nas respostas analisadas.
+
+Esse header ajuda a isolar o contexto de navegacao da pagina em relacao a outras origens, reduzindo riscos associados a interacoes cross-origin e melhorando a postura de seguranca do navegador.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: Cross-Origin-Opener-Policy Header Missing or Invalid
+Risk: Low
+Confidence: Medium
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-006
+```
+
+Alerta reportado:
+
+```text
+Cross-Origin-Opener-Policy Header Missing or Invalid
+```
+
+URLs afetadas:
+
+```text
+http://localhost:8080
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Severidade:
+
+```text
+Low
+```
+
+Confianca:
+
+```text
+Medium
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+O ZAP reportou ausencia ou configuracao invalida do header
+Cross-Origin-Opener-Policy na resposta da aplicacao.
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Respostas HTTP da interface web
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Fluxos afetados:
+
+```text
+GET /
+```
+
+### Risk
+
+A ausencia do header `Cross-Origin-Opener-Policy` pode permitir que a pagina compartilhe contexto de navegacao com documentos de outras origens.
+
+Impactos possiveis:
+
+```text
+Isolamento insuficiente entre contextos de navegacao
+Maior exposicao a interacoes cross-origin indesejadas
+Politica de seguranca de navegador incompleta
+```
+
+Severidade tratada:
+
+```text
+Low
+```
+
+### Root Cause
+
+A causa raiz foi a ausencia do header `Cross-Origin-Opener-Policy` na configuracao centralizada de headers HTTP de seguranca.
+
+A aplicacao ja possuia outros headers defensivos, mas ainda nao definia uma politica explicita para isolamento de contexto de navegacao.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Adicionar o header Cross-Origin-Opener-Policy com o valor same-origin.
+```
+
+Configuracao aplicada:
+
+```java
+httpResponse.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+```
+
+Justificativa:
+
+```text
+O valor same-origin restringe o compartilhamento do contexto de navegacao
+com documentos de outras origens, fortalecendo o isolamento da aplicacao.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+Build da aplicacao executado com sucesso
+Aplicacao executada localmente
+Header Cross-Origin-Opener-Policy validado com curl.exe -I http://localhost:8080
+```
+
+Evidencia local:
+
+```text
+Cross-Origin-Opener-Policy: same-origin
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan OWASP ZAP Baseline nao deve listar o alerta
+Cross-Origin-Opener-Policy Header Missing or Invalid.
+```
+
+### Status
+
+```text
+Fixed
+```
