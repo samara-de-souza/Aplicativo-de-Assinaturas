@@ -613,6 +613,162 @@ GHSA-mhm7-754m-9p8w foram removidos do bloco Java do relatorio
 ### Status
 
 ```text
-Open
+Fixed
 ```
 
+
+## SCA-TRIVY-005 - Vulnerable Log4j API
+
+### Summary
+
+O Trivy identificou uma vulnerabilidade de severidade media no `log4j-api` empacotado no `app.jar`.
+
+O projeto nao declara `log4j-api` diretamente no `pom.xml`. A biblioteca e incluida de forma transitiva por dependencias do ecossistema Spring Boot e sua versao e controlada pela matriz de dependencias do `spring-boot-starter-parent`.
+
+A analise mostrou que o artefato empacotava `log4j-api` na versao `2.24.3`, enquanto o Trivy indicou versoes corrigidas a partir de `2.25.5`.
+
+### Tooling
+
+```text
+Method: SCA
+Tool: Trivy 0.74.0
+Workflow: .github/workflows/security-trivy.yml
+Artifact: trivy-reports
+Report: trivy-image.json
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+SCA-TRIVY-005
+```
+
+Componente vulneravel:
+
+```text
+org.apache.logging.log4j:log4j-api
+```
+
+Versao vulneravel observada:
+
+```text
+2.24.3
+```
+
+Versoes corrigidas indicadas pelo Trivy:
+
+```text
+2.25.5
+2.26.1
+```
+
+Vulnerabilidade reportada:
+
+```text
+CVE-2026-49844 - log4j-api - MEDIUM
+```
+
+### Affected Components
+
+Arquivo afetado:
+
+```text
+pom.xml
+```
+
+Dependencia transitiva afetada:
+
+```text
+org.apache.logging.log4j:log4j-api
+```
+
+Origem da versao:
+
+```text
+spring-boot-starter-parent 3.5.16
+```
+
+### Risk
+
+A vulnerabilidade afeta a biblioteca `log4j-api`, usada por componentes Java para integracao com logging.
+
+Impactos possiveis:
+
+```text
+Geracao incorreta de saida JSON
+Encoding inadequado em logs estruturados
+Risco de interpretacao incorreta de eventos de log por ferramentas downstream
+Possivel degradacao de confiabilidade em trilhas de auditoria
+```
+
+Severidade tratada:
+
+```text
+Medium
+```
+
+### Root Cause
+
+A causa raiz foi a versao vulneravel de `log4j-api` herdada da matriz de dependencias do Spring Boot `3.5.16`.
+
+Como o projeto nao declara `log4j-api` diretamente, a correcao aplicada foi sobrescrever de forma controlada a propriedade de versao do Log4j gerenciada pelo Spring Boot.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Sobrescrita da propriedade log4j2.version para uma versao corrigida indicada
+pelo Trivy.
+```
+
+Configuracao aplicada:
+
+```xml
+<properties>
+    <java.version>21</java.version>
+    <jackson-bom.version>2.21.5</jackson-bom.version>
+    <log4j2.version>2.25.5</log4j2.version>
+</properties>
+```
+
+Justificativa:
+
+```text
+O Trivy indicou log4j-api 2.25.5 como versao corrigida. A atualizacao por
+propriedade mantem o controle centralizado de versoes pelo Maven/Spring Boot
+e evita declarar manualmente a dependencia transitiva no pom.xml.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+pom.xml atualizado com log4j2.version 2.25.5
+Build Maven executado com sucesso
+Testes automatizados executados com sucesso
+Imagem Docker recriada
+Novo scan Trivy executado na imagem
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan Trivy nao deve listar org.apache.logging.log4j:log4j-api 2.24.3
+nem a vulnerabilidade CVE-2026-49844 no bloco Java do relatorio.
+```
+
+### Status
+
+```text
+Fixed
+```
