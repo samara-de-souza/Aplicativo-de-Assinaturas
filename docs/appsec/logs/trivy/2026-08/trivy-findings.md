@@ -462,4 +462,157 @@ tomcat-embed-core 10.1.53.
 Fixed
 ```
 
+## SCA-TRIVY-004 - Vulnerable Jackson Databind
+
+### Summary
+
+O Trivy identificou vulnerabilidades de severidade media no `jackson-databind` empacotado no `app.jar`.
+
+O projeto nao declara `jackson-databind` diretamente no `pom.xml`. A biblioteca e incluida de forma transitiva pelos starters do Spring Boot e sua versao e controlada pela matriz de dependencias do `spring-boot-starter-parent`.
+
+A analise mostrou que o Spring Boot `3.5.16` gerencia `jackson-databind` na versao `2.21.4`, enquanto o Trivy indicou versoes corrigidas a partir de `2.21.5`.
+
+### Tooling
+
+```text
+Method: SCA
+Tool: Trivy 0.74.0
+Workflow: .github/workflows/security-trivy.yml
+Artifact: trivy-reports
+Report: trivy-image.txt
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+SCA-TRIVY-004
+```
+
+Componente vulneravel:
+
+```text
+com.fasterxml.jackson.core:jackson-databind
+```
+
+Versao vulneravel observada:
+
+```text
+2.21.4
+```
+
+Versoes corrigidas indicadas pelo Trivy:
+
+```text
+2.21.5
+2.22.1
+2.18.9
+3.1.4
+```
+
+Vulnerabilidades reportadas:
+
+```text
+CVE-2026-54515 - jackson-databind - MEDIUM
+CVE-2026-59889 - jackson-databind - MEDIUM
+GHSA-mhm7-754m-9p8w - jackson-databind - MEDIUM
+```
+
+### Affected Components
+
+Arquivo afetado:
+
+```text
+pom.xml
+```
+
+Dependencia transitiva afetada:
+
+```text
+com.fasterxml.jackson.core:jackson-databind
+```
+
+Origem da versao:
+
+```text
+spring-boot-starter-parent 3.5.16
+```
+
+### Risk
+
+As vulnerabilidades reportadas afetam o processamento de JSON durante serializacao e desserializacao.
+
+Impactos possiveis:
+
+```text
+Bypass de regras de serializacao
+Modificacao inesperada de propriedades ignoradas
+Exposicao ou manipulacao indevida de dados em cenarios especificos
+Comportamento inesperado em objetos com anotacoes Jackson sensiveis
+```
+
+Severidade tratada:
+
+```text
+Medium
+```
+
+### Root Cause
+
+A causa raiz foi a versao vulneravel de `jackson-databind` herdada da matriz de dependencias do Spring Boot `3.5.16`.
+
+Como ainda nao havia uma versao mais nova do Spring Boot 3.5.x gerenciando `jackson-databind` corrigido no momento da analise, a correcao planejada e sobrescrever de forma controlada a propriedade de versao do Jackson BOM no `pom.xml`.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao planejada:
+
+```text
+Sobrescrever a propriedade jackson-bom.version para uma versao corrigida
+indicada pelo Trivy.
+```
+
+Configuracao proposta:
+
+```xml
+<properties>
+    <java.version>21</java.version>
+    <jackson-bom.version>2.21.5</jackson-bom.version>
+</properties>
+```
+
+Justificativa:
+
+```text
+O Trivy indicou jackson-databind 2.21.5 como versao corrigida dentro da mesma
+linha 2.21.x. Essa opcao reduz o risco de incompatibilidade em relacao a uma
+mudanca maior para 2.22.x ou 3.x.
+```
+
+### Validation
+
+Validacoes planejadas:
+
+```text
+Executar build Maven
+Executar testes automatizados
+Recriar a imagem Docker
+Executar novo scan Trivy na imagem
+Confirmar que jackson-databind 2.21.4 nao aparece mais no app.jar
+Confirmar que os achados CVE-2026-54515, CVE-2026-59889 e
+GHSA-mhm7-754m-9p8w foram removidos do bloco Java do relatorio
+```
+
+### Status
+
+```text
+Open
+```
 
