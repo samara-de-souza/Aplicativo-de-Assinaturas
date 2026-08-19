@@ -719,3 +719,178 @@ CSP: style-src unsafe-inline.
 ```text
 Fixed
 ```
+
+## DAST-ZAP-005 - Permissions Policy Header Not Set
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a aplicacao nao define o header HTTP `Permissions-Policy` nas respostas analisadas.
+
+Esse header permite restringir o uso de recursos sensiveis do navegador, como camera, microfone, geolocalizacao, pagamentos e acesso USB. Como a aplicacao nao precisa desses recursos para o fluxo atual de administracao de assinaturas, a politica foi configurada para negar explicitamente essas permissoes.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: Permissions Policy Header Not Set
+Risk: Low
+Confidence: Medium
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-005
+```
+
+Alerta reportado:
+
+```text
+Permissions Policy Header Not Set
+```
+
+URLs afetadas:
+
+```text
+http://localhost:8080
+http://localhost:8080/scripts.js
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Severidade:
+
+```text
+Low
+```
+
+Confianca:
+
+```text
+Medium
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+O ZAP reportou ausencia do header Permissions-Policy nas respostas da pagina
+principal e do arquivo scripts.js.
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Respostas HTTP da interface web e arquivos estaticos
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Fluxos afetados:
+
+```text
+GET /
+GET /scripts.js
+```
+
+### Risk
+
+A ausencia de `Permissions-Policy` deixa o navegador sem uma politica explicita para limitar APIs sensiveis que a pagina pode usar.
+
+Impactos possiveis:
+
+```text
+Ausencia de restricao explicita para recursos sensiveis do navegador
+Maior superficie para abuso de APIs como camera, microfone ou geolocalizacao
+Politica de seguranca de navegador incompleta
+```
+
+Severidade tratada:
+
+```text
+Low
+```
+
+### Root Cause
+
+A causa raiz foi a ausencia do header `Permissions-Policy` na configuracao centralizada de headers HTTP de seguranca.
+
+Embora a aplicacao nao utilize camera, microfone, geolocalizacao, pagamentos ou USB, esses recursos nao estavam explicitamente bloqueados por header.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Adicionar o header Permissions-Policy negando recursos sensiveis nao usados
+pela aplicacao.
+```
+
+Configuracao aplicada:
+
+```java
+httpResponse.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+```
+
+Justificativa:
+
+```text
+A aplicacao nao depende dessas APIs do navegador. Negar esses recursos reduz
+a superficie de ataque e melhora a postura de seguranca dos headers HTTP.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+Build da aplicacao executado com sucesso
+Aplicacao executada localmente
+Header Permissions-Policy validado com curl.exe -I http://localhost:8080
+```
+
+Evidencia local:
+
+```text
+Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan OWASP ZAP Baseline nao deve listar o alerta
+Permissions Policy Header Not Set.
+```
+
+### Status
+
+```text
+Fixed
+```

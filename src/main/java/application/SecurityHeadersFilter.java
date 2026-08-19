@@ -24,6 +24,7 @@ public class SecurityHeadersFilter implements Filter {
 
         httpResponse.setHeader("Content-Security-Policy", CSP);
         httpResponse.setHeader("X-Content-Type-Options", "nosniff");
+        httpResponse.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
 
         chain.doFilter(request, response);
     }
