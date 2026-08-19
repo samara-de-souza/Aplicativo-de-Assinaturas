@@ -153,7 +153,7 @@ mitigar o finding de clickjacking reportado pelo ZAP.
 
 ### Validation
 
-Validacoes planejadas:
+Validacoes realizadas:
 
 ```text
 Executar testes automatizados
@@ -346,6 +346,178 @@ Criterio de fechamento:
 ```text
 O novo scan OWASP ZAP Baseline nao deve listar o alerta
 CSP: Failure to Define Directive with No Fallback.
+```
+
+### Status
+
+```text
+Fixed
+```
+
+## DAST-ZAP-003 - X-Content-Type-Options Header Missing
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a aplicacao nao define o header HTTP `X-Content-Type-Options` nas respostas analisadas.
+
+Esse header instrui o navegador a respeitar o `Content-Type` declarado pela aplicacao e evita MIME sniffing. Sem ele, navegadores podem tentar interpretar o conteudo da resposta como um tipo diferente do informado, aumentando o risco em cenarios de injecao ou arquivos servidos com tipo incorreto.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: X-Content-Type-Options Header Missing
+Risk: Low
+Confidence: Medium
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-003
+```
+
+Alerta reportado:
+
+```text
+X-Content-Type-Options Header Missing
+```
+
+URLs afetadas:
+
+```text
+http://localhost:8080
+http://localhost:8080/scripts.js
+http://localhost:8080/styles.css
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Parametro:
+
+```text
+x-content-type-options
+```
+
+Severidade:
+
+```text
+Low
+```
+
+Confianca:
+
+```text
+Medium
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+O ZAP reportou ausencia do header X-Content-Type-Options nas respostas da
+pagina principal e dos arquivos estaticos scripts.js e styles.css.
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Respostas HTTP da interface web e arquivos estaticos
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Fluxos afetados:
+
+```text
+GET /
+GET /scripts.js
+GET /styles.css
+```
+
+### Risk
+
+A ausencia do header `X-Content-Type-Options` permite que alguns navegadores tentem inferir o tipo do conteudo retornado, em vez de respeitar estritamente o `Content-Type` enviado pela aplicacao.
+
+Impactos possiveis:
+
+```text
+MIME sniffing pelo navegador
+Interpretacao incorreta de arquivos estaticos
+Maior risco em cenarios de upload, injecao ou resposta com Content-Type incorreto
+Reducao da postura de seguranca dos headers HTTP
+```
+
+Severidade tratada:
+
+```text
+Low
+```
+
+### Root Cause
+
+A causa raiz foi a ausencia do header `X-Content-Type-Options` na configuracao centralizada de headers HTTP de seguranca.
+
+Embora a aplicacao ja envie `Content-Security-Policy`, ainda nao havia configuracao para instruir o navegador a desabilitar MIME sniffing.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao planejada:
+
+```text
+Adicionar o header X-Content-Type-Options com valor nosniff nas respostas HTTP.
+```
+
+Configuracao proposta:
+
+```java
+httpResponse.setHeader("X-Content-Type-Options", "nosniff");
+```
+
+Justificativa:
+
+```text
+O valor nosniff instrui navegadores compativeis a nao tentar interpretar o
+conteudo da resposta como um tipo diferente do declarado pelo Content-Type.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+Executar testes automatizados
+Executar a aplicacao localmente
+Validar o header com curl.exe -I http://localhost:8080
+Executar novamente o OWASP ZAP Baseline
+Confirmar que o alerta X-Content-Type-Options Header Missing foi removido
 ```
 
 ### Status

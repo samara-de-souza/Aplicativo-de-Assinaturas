@@ -23,6 +23,7 @@ public class SecurityHeadersFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         httpResponse.setHeader("Content-Security-Policy", CSP);
+        httpResponse.setHeader("X-Content-Type-Options", "nosniff");
 
         chain.doFilter(request, response);
     }
