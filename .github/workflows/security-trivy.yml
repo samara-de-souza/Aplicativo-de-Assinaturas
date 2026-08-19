@@ -18,10 +18,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare reports directory
-        run: mkdir -p reports/trivy
+        run: |
+          mkdir -p reports/trivy
+          echo "Trivy reports directory initialized." > reports/trivy/README.txt
 
       - name: Trivy secret scan report
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           scan-type: fs
           scan-ref: .
@@ -33,6 +36,7 @@ jobs:
 
       - name: Trivy secret scan JSON report
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           scan-type: fs
           scan-ref: .
@@ -41,16 +45,6 @@ jobs:
           format: json
           output: reports/trivy/trivy-secrets.json
           exit-code: 0
-
-      - name: Trivy secret scanning gate
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: fs
-          scan-ref: .
-          scanners: secret
-          skip-dirs: target
-          format: table
-          exit-code: 1
 
       - name: Build Docker image
         run: docker build -f dockerfile -t e-signature-app .
@@ -110,3 +104,13 @@ jobs:
           name: trivy-reports
           path: reports/trivy/
           if-no-files-found: error
+
+      - name: Trivy secret scanning gate
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          skip-dirs: target
+          format: table
+          exit-code: 1
