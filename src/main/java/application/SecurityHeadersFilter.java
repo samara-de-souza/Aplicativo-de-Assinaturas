@@ -27,6 +27,7 @@ public class SecurityHeadersFilter implements Filter {
         httpResponse.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
         httpResponse.setHeader("Cross-Origin-Opener-Policy", "same-origin");
         httpResponse.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+        httpResponse.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
 
         chain.doFilter(request, response);
     }

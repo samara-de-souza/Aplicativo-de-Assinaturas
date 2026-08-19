@@ -1238,3 +1238,175 @@ Cross-Origin-Resource-Policy Header Missing or Invalid.
 ```text
 Fixed
 ```
+
+## DAST-ZAP-008 - Cross-Origin-Embedder-Policy Header Missing or Invalid
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a aplicacao nao definia o header HTTP `Cross-Origin-Embedder-Policy` nas respostas analisadas.
+
+Esse header ajuda a controlar como recursos cross-origin podem ser carregados pela pagina, exigindo politicas explicitas para recursos incorporados e fortalecendo o isolamento do contexto web.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: Cross-Origin-Embedder-Policy Header Missing or Invalid
+Risk: Low
+Confidence: Medium
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-008
+```
+
+Alerta reportado:
+
+```text
+Cross-Origin-Embedder-Policy Header Missing or Invalid
+```
+
+URLs afetadas:
+
+```text
+http://localhost:8080
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Severidade:
+
+```text
+Low
+```
+
+Confianca:
+
+```text
+Medium
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+O ZAP reportou ausencia ou configuracao invalida do header
+Cross-Origin-Embedder-Policy na resposta da aplicacao.
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Respostas HTTP da interface web e arquivos estaticos
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Fluxos afetados:
+
+```text
+GET /
+```
+
+### Risk
+
+A ausencia do header `Cross-Origin-Embedder-Policy` deixa a aplicacao sem uma politica explicita para controlar recursos incorporados de outras origens.
+
+Impactos possiveis:
+
+```text
+Isolamento cross-origin incompleto
+Carregamento de recursos incorporados sem politica explicita
+Politica de seguranca de navegador incompleta
+```
+
+Severidade tratada:
+
+```text
+Low
+```
+
+### Root Cause
+
+A causa raiz foi a ausencia do header `Cross-Origin-Embedder-Policy` na configuracao centralizada de headers HTTP de seguranca.
+
+A aplicacao ja definia headers relacionados a CSP, COOP e CORP, mas ainda nao declarava uma politica explicita para recursos incorporados.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Adicionar o header Cross-Origin-Embedder-Policy com o valor require-corp.
+```
+
+Configuracao aplicada:
+
+```java
+httpResponse.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+```
+
+Justificativa:
+
+```text
+O valor require-corp exige politicas explicitas para recursos cross-origin
+incorporados pela pagina, fortalecendo o isolamento do navegador.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+Build da aplicacao executado com sucesso
+Aplicacao executada localmente
+Header Cross-Origin-Embedder-Policy validado com curl.exe -I http://localhost:8080
+```
+
+Evidencia local:
+
+```text
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan OWASP ZAP Baseline nao deve listar o alerta
+Cross-Origin-Embedder-Policy Header Missing or Invalid.
+```
+
+### Status
+
+```text
+Fixed
+```
