@@ -21,9 +21,12 @@ public class PagamentoService {
         Assinatura assinatura = assinaturaRepository.findById(codAssinatura)
                 .orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
 
+        validarDataPagamento(dia, mes, ano);
+        
         Calendar cal = Calendar.getInstance();
+        cal.setLenient(false);
         cal.set(Calendar.DAY_OF_MONTH, dia);
-        cal.set(Calendar.MONTH, mes - 1); // Meses em Java começam do 0
+        cal.set(Calendar.MONTH, mes - 1);
         cal.set(Calendar.YEAR, ano);
         Date dataPagamento = cal.getTime();
 
@@ -39,5 +42,19 @@ public class PagamentoService {
         response.put("valor", valorPago.toString());
 
         return response;
+    }
+
+    private void validarDataPagamento(int dia, int mes, int ano) {
+        if (mes < 1 || mes > 12) {
+            throw new IllegalArgumentException("Mes invalido");
+        }
+
+        if (dia < 1 || dia > 31) {
+            throw new IllegalArgumentException("Dia invalido");
+        }
+
+        if (ano < 2000 || ano > 2100) {
+            throw new IllegalArgumentException("Ano invalido");
+        }
     }
 }
