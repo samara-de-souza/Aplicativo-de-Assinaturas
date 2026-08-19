@@ -20,6 +20,38 @@ jobs:
       - name: Prepare reports directory
         run: mkdir -p reports/trivy
 
+      - name: Trivy secret scan report
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          skip-dirs: target
+          format: table
+          output: reports/trivy/trivy-secrets.txt
+          exit-code: 0
+
+      - name: Trivy secret scan JSON report
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          skip-dirs: target
+          format: json
+          output: reports/trivy/trivy-secrets.json
+          exit-code: 0
+
+      - name: Trivy secret scanning gate
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          skip-dirs: target
+          format: table
+          exit-code: 1
+
       - name: Build Docker image
         run: docker build -f dockerfile -t e-signature-app .
 
@@ -72,6 +104,7 @@ jobs:
           output: reports/trivy/trivy-image.json
 
       - name: Upload Trivy reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: trivy-reports
