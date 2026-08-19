@@ -1066,3 +1066,175 @@ Cross-Origin-Opener-Policy Header Missing or Invalid.
 ```text
 Fixed
 ```
+
+## DAST-ZAP-007 - Cross-Origin-Resource-Policy Header Missing or Invalid
+
+### Summary
+
+O OWASP ZAP Baseline identificou que a aplicacao nao definia o header HTTP `Cross-Origin-Resource-Policy` nas respostas analisadas.
+
+Esse header orienta o navegador sobre quais origens podem carregar recursos da aplicacao, reduzindo a exposicao de arquivos e respostas a leituras cross-origin indevidas.
+
+### Tooling
+
+```text
+Method: DAST
+Tool: OWASP ZAP Baseline
+Workflow: .github/workflows/security-zap.yml
+Artifact: zap-baseline-report
+Report: report_html.html / report_json.json / report_md.md
+Alert: Cross-Origin-Resource-Policy Header Missing or Invalid
+Risk: Low
+Confidence: Medium
+```
+
+### Evidence
+
+ID do achado:
+
+```text
+DAST-ZAP-007
+```
+
+Alerta reportado:
+
+```text
+Cross-Origin-Resource-Policy Header Missing or Invalid
+```
+
+URLs afetadas:
+
+```text
+http://localhost:8080
+```
+
+Metodo:
+
+```text
+GET
+```
+
+Severidade:
+
+```text
+Low
+```
+
+Confianca:
+
+```text
+Medium
+```
+
+CWE:
+
+```text
+CWE-693 - Protection Mechanism Failure
+```
+
+Evidencia observada no relatorio:
+
+```text
+O ZAP reportou ausencia ou configuracao invalida do header
+Cross-Origin-Resource-Policy na resposta da aplicacao.
+```
+
+### Affected Components
+
+Componente afetado:
+
+```text
+Respostas HTTP da interface web e arquivos estaticos
+```
+
+Arquivo relacionado:
+
+```text
+src/main/java/application/SecurityHeadersFilter.java
+```
+
+Fluxos afetados:
+
+```text
+GET /
+```
+
+### Risk
+
+A ausencia do header `Cross-Origin-Resource-Policy` deixa a aplicacao sem uma politica explicita para restringir o carregamento de seus recursos por outras origens.
+
+Impactos possiveis:
+
+```text
+Ausencia de restricao explicita para consumo cross-origin de recursos
+Maior exposicao de arquivos estaticos a contextos externos
+Politica de seguranca de navegador incompleta
+```
+
+Severidade tratada:
+
+```text
+Low
+```
+
+### Root Cause
+
+A causa raiz foi a ausencia do header `Cross-Origin-Resource-Policy` na configuracao centralizada de headers HTTP de seguranca.
+
+A aplicacao ja definia outros headers defensivos, mas ainda nao restringia explicitamente o carregamento de recursos por outras origens.
+
+### Remediation Plan
+
+Log ID:
+
+```text
+log-01
+```
+
+Correcao aplicada:
+
+```text
+Adicionar o header Cross-Origin-Resource-Policy com o valor same-origin.
+```
+
+Configuracao aplicada:
+
+```java
+httpResponse.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+```
+
+Justificativa:
+
+```text
+O valor same-origin limita o carregamento de recursos da aplicacao a paginas
+da mesma origem, reduzindo exposicao cross-origin desnecessaria.
+```
+
+### Validation
+
+Validacoes realizadas:
+
+```text
+Build da aplicacao executado com sucesso
+Aplicacao executada localmente
+Header Cross-Origin-Resource-Policy validado com curl.exe -I http://localhost:8080
+```
+
+Evidencia local:
+
+```text
+Cross-Origin-Resource-Policy: same-origin
+```
+
+Criterio de fechamento:
+
+```text
+O novo scan OWASP ZAP Baseline nao deve listar o alerta
+Cross-Origin-Resource-Policy Header Missing or Invalid.
+```
+
+### Status
+
+```text
+Fixed
+```

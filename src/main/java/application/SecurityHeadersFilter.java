@@ -26,6 +26,7 @@ public class SecurityHeadersFilter implements Filter {
         httpResponse.setHeader("X-Content-Type-Options", "nosniff");
         httpResponse.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
         httpResponse.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+        httpResponse.setHeader("Cross-Origin-Resource-Policy", "same-origin");
 
         chain.doFilter(request, response);
     }
