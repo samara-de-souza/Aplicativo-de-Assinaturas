@@ -99,6 +99,15 @@ jobs:
           format: json
           output: reports/trivy/trivy-image.json
 
+      - name: Generate CycloneDX SBOM with Trivy
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: image
+          image-ref: e-signature-app
+          format: cyclonedx
+          output: reports/trivy/sbom.cdx.json
+
       - name: Upload Trivy reports
         if: always()
         uses: actions/upload-artifact@v4
