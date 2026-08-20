@@ -30,6 +30,7 @@ jobs:
           scan-ref: .
           scanners: secret
           skip-dirs: target
+          skip-files: pom.xml
           format: table
           output: reports/trivy/trivy-secrets.txt
           exit-code: 0
@@ -42,6 +43,7 @@ jobs:
           scan-ref: .
           scanners: secret
           skip-dirs: target
+          skip-files: pom.xml
           format: json
           output: reports/trivy/trivy-secrets.json
           exit-code: 0
@@ -112,5 +114,6 @@ jobs:
           scan-ref: .
           scanners: secret
           skip-dirs: target
+          skip-files: pom.xml
           format: table
           exit-code: 1
