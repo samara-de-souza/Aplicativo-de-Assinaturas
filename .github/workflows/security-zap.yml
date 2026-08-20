@@ -36,7 +36,7 @@ jobs:
         run: ./mvnw clean package -DskipTests
 
       - name: Build Docker image
-        run: docker build -f dockerfile -t e-signature-app .
+        run: docker build -t e-signature-app .
 
       - name: Run application container
         run: docker run -d --name e-signature-app -p 8080:8080 e-signature-app

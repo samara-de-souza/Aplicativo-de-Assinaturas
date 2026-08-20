@@ -49,7 +49,7 @@ jobs:
           exit-code: 0
 
       - name: Build Docker image
-        run: docker build -f dockerfile -t e-signature-app .
+        run: docker build -t e-signature-app .
 
       - name: Scan repository with Trivy
         uses: aquasecurity/trivy-action@master

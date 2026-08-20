@@ -35,4 +35,4 @@ jobs:
         run: ./mvnw clean package
 
       - name: Build Docker image
-        run: docker build -f dockerfile -t e-signature-app .
+        run: docker build -t e-signature-app .
